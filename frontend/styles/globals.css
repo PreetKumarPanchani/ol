@@ -1,0 +1,583 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Theme - Professional Legal (refined for better contrast and readability) */
+    --background: 0 0% 100%; /* White */
+    --foreground: 206 32% 12%; /* Dark navy text */
+    
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 206 32% 12%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 206 32% 12%;
+    
+    --primary: 206 32% 15%; /* Navy primary */
+    --primary-foreground: 0 0% 100%; /* White on primary */
+    
+    --secondary: 43 74% 49%; /* Gold secondary */
+    --secondary-foreground: 206 32% 12%; /* Navy on gold */
+    
+    --muted: 0 0% 96%; /* Light gray muted */
+    --muted-foreground: 0 0% 45%; /* Medium gray text */
+    
+    --accent: 152 22% 50%; /* Sage accent */
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%; /* Red destructive */
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 89%; /* Light border */
+    --input: 0 0% 89%;
+    --ring: 206 32% 15%; /* Navy ring */
+    
+    --radius: 0.5rem; /* Slightly larger radius for modern feel */
+    
+    /* Legal-specific variables (refined hues for professionalism) */
+    --legal-gold: 43 74% 49%; /* Warm gold */
+    --legal-navy: 206 32% 15%; /* Deep navy */
+    --legal-sage: 152 22% 50%; /* Muted sage green */
+    
+    /* Spacing Scale (added more granular options) */
+    --space-xxs: 0.25rem;
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.25rem;
+    --space-xl: 1.5rem;
+    --space-2xl: 2rem;
+    --space-3xl: 3rem;
+    --space-4xl: 4rem;
+  }
+  
+  .dark {
+    --background: 206 32% 5%; /* Dark navy bg */
+    --foreground: 0 0% 95%; /* Light text */
+    
+    --card: 206 32% 8%; /* Darker cards */
+    --card-foreground: 0 0% 95%;
+    
+    --popover: 206 32% 8%;
+    --popover-foreground: 0 0% 95%;
+    
+    --primary: 43 74% 49%; /* Gold primary in dark */
+    --primary-foreground: 206 32% 12%;
+    
+    --secondary: 206 32% 20%; /* Navy secondary */
+    --secondary-foreground: 0 0% 95%;
+    
+    --muted: 206 32% 15%; /* Muted dark */
+    --muted-foreground: 0 0% 60%;
+    
+    --accent: 152 22% 50%; /* Sage accent */
+    --accent-foreground: 0 0% 95%;
+    
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 95%;
+    
+    --border: 206 32% 20%; /* Dark borders */
+    --input: 206 32% 20%;
+    --ring: 43 74% 49%; /* Gold ring in dark */
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Typography Scale (refined for better hierarchy and readability) */
+h1, .h1 {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(2.25rem, 5vw, 3.5rem); /* Larger for impact */
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+h2, .h2 {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+h3, .h3 {
+  font-size: clamp(1.375rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.body-large {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.body-base {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.body-small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.caption {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+}
+
+/* Legal-specific Typography (added italics for citations) */
+.legal-citation {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.025em;
+}
+
+/* Container System (improved padding for mobile) */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-sm);
+  padding-right: var(--space-sm);
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+    padding-left: var(--space-2xl);
+    padding-right: var(--space-2xl);
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* Button System (added subtle scale on hover, better focus states) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-1px) scale(1.02); /* Subtle lift and scale */
+}
+
+.btn:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px hsl(var(--ring) / 0.1);
+}
+
+.btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Button Sizes (adjusted for touch targets on mobile) */
+.btn-sm {
+  height: 2.25rem;
+  padding: 0 var(--space-sm);
+  font-size: 0.875rem;
+  min-width: 2.25rem; /* Better touch */
+}
+
+.btn-md {
+  height: 2.75rem;
+  padding: 0 var(--space-md);
+  font-size: 1rem;
+  min-width: 2.75rem;
+}
+
+.btn-lg {
+  height: 3.25rem;
+  padding: 0 var(--space-lg);
+  font-size: 1.125rem;
+  min-width: 3.25rem;
+}
+
+/* Button Variants (added gold hover effects for legal theme) */
+.btn-primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
+}
+
+.btn-primary:hover {
+  background: hsl(var(--primary) / 0.95);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+}
+
+.btn-secondary {
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+}
+
+.btn-secondary:hover {
+  background: hsl(var(--secondary) / 0.9);
+}
+
+.btn-outline {
+  border: 1px solid hsl(var(--border));
+  background: transparent;
+  color: hsl(var(--foreground));
+}
+
+.btn-outline:hover {
+  background: hsl(var(--accent) / 0.05);
+  color: hsl(var(--accent));
+  border-color: hsl(var(--accent));
+}
+
+.btn-ghost {
+  background: transparent;
+  color: hsl(var(--foreground));
+}
+
+.btn-ghost:hover {
+  background: hsl(var(--accent) / 0.05);
+}
+
+/* Card System (deeper shadows, smoother hover) */
+.card {
+  background: hsl(var(--card));
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgb(0 0 0 / 0.1);
+  transform: translateY(-4px); /* More pronounced lift */
+}
+
+.card-header {
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.card-body {
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.card-footer {
+  padding: var(--space-lg) var(--space-xl);
+  border-top: 1px solid hsl(var(--border));
+}
+
+/* Input System (improved focus, better mobile height) */
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: all 0.2s;
+  min-height: 48px; /* Better touch on mobile */
+}
+
+.input:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.1);
+}
+
+.input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  margin-bottom: var(--space-xxs);
+  display: block;
+}
+
+/* Legal Components (enhanced with gradients and transitions) */
+.legal-header {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary) / 0.8) 100%);
+  color: hsl(var(--primary-foreground));
+  padding: var(--space-2xl) 0;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+}
+
+.case-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.case-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px; /* Thicker for emphasis */
+  background: linear-gradient(to bottom, hsl(var(--legal-gold)), hsl(var(--legal-sage)));
+  opacity: 0;
+  transition: opacity 0.3s, width 0.3s;
+}
+
+.case-card:hover::before {
+  opacity: 1;
+  width: 6px;
+}
+
+.case-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgb(0 0 0 / 0.1);
+}
+
+/* Animations (added easing for natural feel) */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.4s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Mobile Navigation (improved shadow, icons) */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: hsl(var(--card));
+  border-top: 1px solid hsl(var(--border));
+  padding: var(--space-xxs) var(--space-sm);
+  z-index: 50;
+  box-shadow: 0 -8px 16px rgb(0 0 0 / 0.05);
+}
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xxs);
+  padding: var(--space-xs) var(--space-sm);
+  color: hsl(var(--muted-foreground));
+  transition: all 0.2s ease;
+  border-radius: var(--radius);
+}
+
+.mobile-nav-item:hover {
+  background: hsl(var(--accent) / 0.05);
+}
+
+.mobile-nav-item.active {
+  color: hsl(var(--primary));
+  background: hsl(var(--primary) / 0.1);
+}
+
+/* Responsive Grid System (added gaps for mobile) */
+.grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (max-width: 640px) {
+  .grid {
+    gap: var(--space-sm);
+  }
+}
+
+.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .lg\:grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* Utility Classes (added more for legal theme) */
+.text-legal-gold { color: hsl(var(--legal-gold)); }
+.bg-legal-gold { background-color: hsl(var(--legal-gold)); }
+.text-legal-navy { color: hsl(var(--legal-navy)); }
+.bg-legal-navy { background-color: hsl(var(--legal-navy)); }
+.text-legal-sage { color: hsl(var(--legal-sage)); }
+.bg-legal-sage { background-color: hsl(var(--legal-sage)); }
+.shadow-legal { box-shadow: 0 4px 12px hsl(var(--legal-navy) / 0.1); }
+
+/* Loading States (smoother animation) */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted) / 0.3) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 300% 100%; /* Larger for smoother */
+  animation: loading 2s infinite ease-in-out;
+}
+
+@keyframes loading {
+  0% { background-position: 300% 0; }
+  100% { background-position: -300% 0; }
+}
+
+/* Scrollbar Customization (legal colors) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted) / 0.5);
+  border-radius: var(--radius);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.5);
+  border-radius: var(--radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.7);
+}
+
+/* Focus Management (stronger for accessibility) */
+.focus-visible:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2);
+  border-radius: var(--radius);
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Print Styles (enhanced for legal docs) */
+@media print {
+  .no-print { display: none !important; }
+  
+  body {
+    font-size: 11pt;
+    line-height: 1.4;
+    color: #000 !important;
+    background: #fff !important;
+  }
+  
+  .legal-citation {
+    font-weight: bold;
+    font-style: normal;
+  }
+  
+  a {
+    text-decoration: underline;
+    color: #000;
+  }
+}
