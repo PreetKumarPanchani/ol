@@ -29,12 +29,12 @@ export default function ChatInterface({ documents }: ChatInterfaceProps) {
     setMessages([{
       id: 'welcome',
       role: 'assistant',
-      content: `Welcome to LegalAI Research Assistant. I have access to:
-• UK Case Law via National Archives API
+      content: `I can provide legal research with citations and references.
+• UK Case Law
 • UK Legislation database
 • ${documents.length} uploaded document(s) for analysis
 
-I can provide legal research with proper citations and references. How may I assist you today?`,
+`,
       timestamp: new Date()
     }]);
   }, [documents.length]);
@@ -133,7 +133,7 @@ I can provide legal research with proper citations and references. How may I ass
           <div className="ml-3">
             <h3 className="text-lg font-medium text-gray-900 dark:text-white">Legal Research Chat</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {documents.length} document{documents.length !== 1 ? 's' : ''} indexed • Real-time case law access
+              {documents.length} document{documents.length !== 1 ? 's' : ''} Stored
             </p>
           </div>
         </div>
