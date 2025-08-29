@@ -92,14 +92,14 @@ class SearchService:
         self,
         query: str,
         limit: int = 10,
-        use_cache: bool = True,
+        use_cache: bool = False,
         cache_duration_hours: int = 24
     ) -> List[Dict]:
-        """Search case law with caching"""
+        """Search case law with optional caching"""
         db = SessionLocal()
         try:
-            # Check cache if enabled
-            if use_cache:
+            # Check cache if enabled AND storage is enabled
+            if use_cache and settings.STORE_CASE_SEARCHES:
                 cutoff_time = datetime.utcnow() - timedelta(hours=cache_duration_hours)
                 cached = db.query(CaseSearch).filter(
                     CaseSearch.query == query,
@@ -114,14 +114,18 @@ class SearchService:
             logger.info(f"Performing new case search for: {query}")
             cases = self.caselaw_service.search_cases(query, max_results=limit)
             
-            # Save to cache
-            cache_entry = CaseSearch(
-                query=query,
-                results=cases,
-                timestamp=datetime.utcnow()
-            )
-            db.add(cache_entry)
-            db.commit()
+            # Save to cache ONLY if both caching and storage are enabled
+            if use_cache and settings.STORE_CASE_SEARCHES:
+                cache_entry = CaseSearch(
+                    query=query,
+                    results=cases,
+                    timestamp=datetime.utcnow()
+                )
+                db.add(cache_entry)
+                db.commit()
+                logger.info(f"Case search cached for query: {query}")
+            else:
+                logger.info(f"Case search not cached (storage disabled)")
             
             return cases
             

@@ -24,7 +24,8 @@ engine = create_engine(
     }
 )
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Set expire_on_commit=False to fix DetachedInstanceError
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 Base = declarative_base()
 
 class Document(Base):
@@ -91,9 +92,13 @@ def init_database():
             conn.commit()
             logger.info("pgvector extension enabled")
             
+        # Check and add missing columns
+        #check_and_fix_schema()
+            
     except Exception as e:
         logger.error(f"Database initialization failed: {e}")
         raise
+
 
 def get_db():
     """Get database session"""
@@ -103,5 +108,111 @@ def get_db():
     finally:
         db.close()
 
+
+
+def check_and_fix_schema():
+    """Check and fix database schema if columns are missing"""
+    try:
+        with engine.connect() as conn:
+            # Check if total_chunks column exists in documents table
+            result = conn.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'documents' AND column_name = 'total_chunks'
+            """))
+            
+            if not result.fetchone():
+                logger.info("Adding missing 'total_chunks' column to documents table")
+                conn.execute(text("""
+                    ALTER TABLE documents 
+                    ADD COLUMN total_chunks INTEGER
+                """))
+                conn.commit()
+                logger.info("✅ Added total_chunks column")
+            
+            # Check if doc_metadata column exists in documents table
+            result = conn.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'documents' AND column_name = 'doc_metadata'
+            """))
+            
+            if not result.fetchone():
+                logger.info("Adding missing 'doc_metadata' column to documents table")
+                conn.execute(text("""
+                    ALTER TABLE documents 
+                    ADD COLUMN doc_metadata JSONB
+                """))
+                conn.commit()
+                logger.info("✅ Added doc_metadata column")
+            
+            # Check if s3_url column exists in documents table
+            result = conn.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'documents' AND column_name = 's3_url'
+            """))
+            
+            if not result.fetchone():
+                logger.info("Adding missing 's3_url' column to documents table")
+                conn.execute(text("""
+                    ALTER TABLE documents 
+                    ADD COLUMN s3_url VARCHAR
+                """))
+                conn.commit()
+                logger.info("✅ Added s3_url column")
+            
+            # Check if doc_metadata column exists in document_chunks table
+            result = conn.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'document_chunks' AND column_name = 'doc_metadata'
+            """))
+            
+            if not result.fetchone():
+                logger.info("Adding missing 'doc_metadata' column to document_chunks table")
+                conn.execute(text("""
+                    ALTER TABLE document_chunks 
+                    ADD COLUMN doc_metadata JSONB
+                """))
+                conn.commit()
+                logger.info("✅ Added doc_metadata column to document_chunks")
+            
+            # Check if hash column exists in document_chunks table
+            result = conn.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'document_chunks' AND column_name = 'hash'
+            """))
+            
+            if not result.fetchone():
+                logger.info("Adding missing 'hash' column to document_chunks table")
+                conn.execute(text("""
+                    ALTER TABLE document_chunks 
+                    ADD COLUMN hash VARCHAR
+                """))
+                conn.commit()
+                logger.info("✅ Added hash column to document_chunks")
+            
+            # Check if created_at column exists in document_chunks table
+            result = conn.execute(text("""
+                SELECT column_name 
+                FROM information_schema.columns 
+                WHERE table_name = 'document_chunks' AND column_name = 'created_at'
+            """))
+            
+            if not result.fetchone():
+                logger.info("Adding missing 'created_at' column to document_chunks table")
+                conn.execute(text("""
+                    ALTER TABLE document_chunks 
+                    ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                """))
+                conn.commit()
+                logger.info("✅ Added created_at column to document_chunks")
+                
+    except Exception as e:
+        logger.error(f"Schema check/fix failed: {e}")
+        # Don't raise - this is not critical for app startup
+        
 # Initialize database on import
 init_database()

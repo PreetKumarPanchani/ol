@@ -108,7 +108,7 @@ export default function DocumentUpload({ onUpload }: { onUpload: (docs: any[]) =
               Document Management
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Upload legal documents for AI-powered analysis and search
+              Upload Legal Documents for AI-Powered Analysis
             </p>
           </div>
 
@@ -194,8 +194,8 @@ export default function DocumentUpload({ onUpload }: { onUpload: (docs: any[]) =
                         {doc.status === 'completed' && doc.summary && (
                           <div className="mt-3">
                             <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                              {doc.totalChunks} chunks processed • 
-                              {doc.metadata?.total_pages} pages • 
+                              {doc.totalChunks || 0} chunks processed • 
+                              {doc.metadata?.total_pages || 'Unknown'} pages • 
                               {doc.metadata?.deduplication_ratio 
                                 ? ` ${(doc.metadata.deduplication_ratio * 100).toFixed(1)}% deduplication`
                                 : ''}

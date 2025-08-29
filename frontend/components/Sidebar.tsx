@@ -1,5 +1,5 @@
 // components/Sidebar.tsx
-import { useState } from 'react';
+import { useState, forwardRef, ForwardedRef } from 'react';
 import {
   MessageSquare,
   FileText,
@@ -19,14 +19,14 @@ interface SidebarProps {
   setActiveView: (view: string) => void;
 }
 
-export default function Sidebar({ isOpen, activeView, setActiveView }: SidebarProps) {
+const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(({ isOpen, activeView, setActiveView }, ref) => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const toggleSection = (section: string) => {
     if (expandedSection === section) {
       setExpandedSection(null);
     } else {
-      setExpandedSection(section);
+      setExpandedSection(null);
     }
   };
 
@@ -48,13 +48,16 @@ export default function Sidebar({ isOpen, activeView, setActiveView }: SidebarPr
   };
 
   return (
-    <div className={`
-      bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
-      transform top-0 left-0 bottom-0 z-40 fixed md:relative
-      transition-transform duration-300 ease-in-out
-      w-64 flex flex-col
-      ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-20'}
-    `}>
+    <div 
+      ref={ref}
+      className={`
+        bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
+        transform top-0 left-0 bottom-0 z-40 fixed md:relative
+        transition-transform duration-300 ease-in-out
+        w-64 flex flex-col
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-20'}
+      `}
+    >
       <div className="flex-1 overflow-y-auto py-4">
         <nav className="px-2 space-y-1">
           {navItems.map((item) => (
@@ -91,4 +94,8 @@ export default function Sidebar({ isOpen, activeView, setActiveView }: SidebarPr
       </div>
     </div>
   );
-}
+});
+
+Sidebar.displayName = 'Sidebar';
+
+export default Sidebar;

@@ -443,6 +443,36 @@ h3, .h3 {
     justify-content: space-around;
     align-items: center;
   }
+  
+  /* Mobile sidebar improvements */
+  .sidebar-mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 39;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .sidebar-mobile-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Ensure mobile sidebar is above overlay */
+  .sidebar-mobile {
+    z-index: 40;
+  }
+  
+  /* Better touch targets for mobile */
+  .mobile-nav-item {
+    min-height: 60px;
+    min-width: 60px;
+  }
 }
 
 .mobile-nav-item {

@@ -21,12 +21,16 @@ export default function MobileNav({ activeView, setActiveView }: MobileNavProps)
     { id: 'settings', icon: Settings, label: 'Settings' },
   ];
 
+  const handleNavClick = (viewId: string) => {
+    setActiveView(viewId);
+  };
+
   return (
     <div className="mobile-nav">
       {navItems.map((item) => (
         <button
           key={item.id}
-          onClick={() => setActiveView(item.id)}
+          onClick={() => handleNavClick(item.id)}
           className={`mobile-nav-item ${activeView === item.id ? 'active' : ''}`}
         >
           <item.icon className="h-5 w-5" />

@@ -24,14 +24,14 @@ const Settings = () => (
         <label className="block text-sm font-medium mb-2">API Configuration</label>
         <input type="text" placeholder="OpenAI API Key" className="w-full p-2 border rounded" />
       </div>
-      <div>
+      {/*<div>
         <label className="block text-sm font-medium mb-2">Theme</label>
         <select className="w-full p-2 border rounded">
           <option>Light</option>
           <option>Dark</option>
           <option>System</option>
         </select>
-      </div>
+      </div>*/}
     </div>
   </div>
 );

@@ -57,6 +57,53 @@ class ApiClient {
       limit: params.limit || 10
     });
   }
+
+  // RAG API Methods
+  
+  async queryWithRAG(
+    query: string,
+    searchTypes: string[] = ['cases', 'legislation'],
+    embeddingModel: string = 'minilm',  // Default to MiniLM
+    sessionId?: string,
+    kRetrieval: number = 5,
+    autoCleanup: boolean = true
+  ) {
+    const response = await this.client.post('/api/rag/query', {
+      query,
+      search_types: searchTypes,
+      embedding_model: embeddingModel,
+      session_id: sessionId,
+      k_retrieval: kRetrieval,
+      auto_cleanup: autoCleanup
+    });
+    
+    return response.data;
+  }
+
+  async createRAGSession() {
+    const response = await this.client.post('/api/rag/session/create');
+    return response.data;
+  }
+
+  async cleanupRAGSession(sessionId: string) {
+    const response = await this.client.delete(`/api/rag/session/${sessionId}`);
+    return response.data;
+  }
+
+  async listRAGSessions() {
+    const response = await this.client.get('/api/rag/sessions');
+    return response.data;
+  }
+
+  async getRAGConfig() {
+    const response = await this.client.get('/api/rag/config');
+    return response.data;
+  }
+
+  async cleanupExpiredRAGSessions() {
+    const response = await this.client.post('/api/rag/cleanup/expired');
+    return response.data;
+  }
 }
 
 export const apiClient = new ApiClient();

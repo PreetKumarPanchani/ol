@@ -35,4 +35,4 @@ class DocumentResponse(BaseModel):
     filename: str
     total_chunks: int
     summary: str
-    metadata: Dict[str, Any]
+    doc_metadata: Dict[str, Any]

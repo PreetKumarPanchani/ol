@@ -15,7 +15,7 @@ class DocumentProcessor:
             length_function=self._tiktoken_len,
             separators=["\n\n", "\n", ". ", " ", ""]
         )
-        self.tokenizer = tiktoken.encoding_for_model("gpt-4")
+        self.tokenizer = tiktoken.encoding_for_model("gpt-4o-mini")
     
     def _tiktoken_len(self, text: str) -> int:
         return len(self.tokenizer.encode(text))
@@ -132,7 +132,8 @@ class DocumentProcessor:
                     'total_pages': len(pages_data),
                     'total_chunks_before_dedup': len(chunks),
                     'deduplication_ratio': 1 - (len(unique_chunks) / len(chunks)) if chunks else 0
-                }
+                },
+                s3_url=None  # Set to None if S3 is not configured
             )
             db.add(document)
             db.commit()

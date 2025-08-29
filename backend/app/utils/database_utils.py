@@ -8,16 +8,8 @@ logger = logging.getLogger(__name__)
 def test_aws_connection() -> Dict[str, Any]:
     """Test AWS PostgreSQL connection and return status"""
     try:
-        # Test direct connection to AWS PostgreSQL
-        conn = psycopg2.connect(
-            host=settings.PG_HOST_AWS,
-            port=settings.PG_PORT_AWS,
-            database=settings.PG_DATABASE_AWS,
-            user=settings.PG_USER_AWS,
-            password=settings.PG_PASSWORD_AWS,
-            sslmode='require',
-            connect_timeout=10
-        )
+        # Test direct connection to AWS PostgreSQL using DATABASE_URL
+        conn = psycopg2.connect(settings.DATABASE_URL)
         
         # Test basic query
         with conn.cursor() as cur:
@@ -29,8 +21,7 @@ def test_aws_connection() -> Dict[str, Any]:
         return {
             "status": "connected",
             "version": version,
-            "host": settings.PG_HOST_AWS,
-            "database": settings.PG_DATABASE_AWS
+            "database_url": settings.DATABASE_URL.replace(settings.PG_PASSWORD_AWS, "***")
         }
         
     except Exception as e:
@@ -38,31 +29,20 @@ def test_aws_connection() -> Dict[str, Any]:
         return {
             "status": "failed",
             "error": str(e),
-            "host": settings.PG_HOST_AWS,
-            "database": settings.PG_DATABASE_AWS
+            "database_url": settings.DATABASE_URL.replace(settings.PG_PASSWORD_AWS, "***")
         }
 
 def get_connection_info() -> Dict[str, Any]:
     """Get connection information for debugging"""
     return {
-        "host": settings.PG_HOST_AWS,
-        "port": settings.PG_PORT_AWS,
-        "database": settings.PG_DATABASE_AWS,
-        "user": settings.PG_USER_AWS,
-        "ssl_mode": "require"
+        "database_url": settings.DATABASE_URL.replace(settings.PG_PASSWORD_AWS, "***"),
+        "ssl_mode": settings.PG_SSLMODE_AWS
     }
 
 def check_pgvector_extension() -> bool:
     """Check if pgvector extension is available"""
     try:
-        conn = psycopg2.connect(
-            host=settings.PG_HOST_AWS,
-            port=settings.PG_PORT_AWS,
-            database=settings.PG_DATABASE_AWS,
-            user=settings.PG_USER_AWS,
-            password=settings.PG_PASSWORD_AWS,
-            sslmode='require'
-        )
+        conn = psycopg2.connect(settings.DATABASE_URL)
         
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM pg_extension WHERE extname = 'vector';")
